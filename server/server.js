@@ -22,6 +22,7 @@ db.mongoose
         useUnifiedTopology: true
     })
     .then(() => {
+        //db.mongoose.connection.db.dropDatabase();
         console.log("Successfully connect to MongoDB.");
     })
     .catch(err => {
@@ -31,7 +32,7 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to bezkoder application." });
+    res.json({ message: "Welcome." });
 });
 
 // routes

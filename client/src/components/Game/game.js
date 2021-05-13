@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import DifficultySelector from './difficultySelector.component';
-import Board from './board.component';
+import DifficultySelector from './difficultySelector';
+import Board from './board';
 import { generateBoard } from '../../utils/boardUtils';
-import Timer from './timer.component';
+import Timer from './timer';
+import axios from "axios";
 
 import AuthService from '../../services/auth.service';
 import UserService from '../../services/user.service';
@@ -15,6 +16,23 @@ export default () => {
         gameOver: false
     });
     const [user, setUser] = useState(AuthService.getCurrentUser().username);
+    const [userStat, setUserStat] = useState({
+        nGames: {
+            easy: 0,
+            medium: 0,
+            hard: 0
+        },
+        nWins: {
+            easy: 0,
+            medium: 0,
+            hard: 0
+        },
+        bests: {
+            easy: null,
+            medium: null,
+            hard: null
+        }
+    });
 
     const selectDifficulty = (diff) => {
         let rows;
@@ -39,7 +57,10 @@ export default () => {
         }
 
         setGameData({ ...gameData, difficulty: diff, board: generateBoard(rows, cols, mines), remaining: rows * cols - mines });
-
+        console.log(`http://localhost:8080/api/userdata?name=${user}`)
+        axios.get(`http://localhost:8080/api/userdata?name=${user}`).then(data => {
+            setUserStat(data.data);
+        });
     };
 
     const cascade = (board, row, col) => {
@@ -109,9 +130,9 @@ export default () => {
 
     const submitResults = (time) => {
         if (gameData.remaining === 0 && gameData.gameOver) {
-            UserService.submitResult(user, gameData.difficulty, time);
+            UserService.submitResult(user, gameData.difficulty, time, true);
         } else {
-            console.log('Game over')
+            UserService.submitResult(user, gameData.difficulty, time, false);
         }
     }
 
@@ -121,7 +142,42 @@ export default () => {
     return (
         <div className="container">
             {gameData.difficulty ?
-                <><Timer submitResults={submitResults} gameOver={gameData.gameOver} /><Board movieHandler={movieHandler} board={gameData.board} /></>
+                <>
+                    <table className="table">
+                        <tr>
+                            <th></th>
+                            <th>Easy</th>
+                            <th>Medium</th>
+                            <th>Hard</th>
+                        </tr>
+                        <tr>
+                            <th>Won</th>
+                            <td>{userStat.nWins.easy}</td>
+                            <td>{userStat.nWins.medium}</td>
+                            <td>{userStat.nWins.hard}</td>
+                        </tr>
+                        <tr>
+                            <th>Lost</th>
+                            <td>{userStat.nGames.easy - userStat.nWins.easy}</td>
+                            <td>{userStat.nGames.medium - userStat.nWins.medium}</td>
+                            <td>{userStat.nGames.hard - userStat.nWins.hard}</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>{userStat.nGames.easy}</td>
+                            <td>{userStat.nGames.medium}</td>
+                            <td>{userStat.nGames.hard}</td>
+                        </tr>
+                        <tr>
+                            <th>Best result</th>
+                            <td>{userStat.bests.easy}</td>
+                            <td>{userStat.bests.medium}</td>
+                            <td>{userStat.bests.hard}</td>
+                        </tr>
+                    </table>
+                    <Timer submitResults={submitResults} gameOver={gameData.gameOver} />
+                    <Board movieHandler={movieHandler} board={gameData.board} />
+                </>
 
                 : <DifficultySelector onSelect={selectDifficulty} />}
         </div>

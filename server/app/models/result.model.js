@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-const User = require("./user.model");
 
 const Result = mongoose.model(
     "Result",
     new mongoose.Schema({
-        username: String,
-        time: Number,
-        level: String,
+        username: { type: String, required: true },
+        time: { type: Number, required: true },
+        level: { type: String, required: true },
+        isWin: { type: Boolean, required: true }
 
     }, { timestamps: true })
 );

@@ -9,10 +9,10 @@ const Home = (props) => {
         <div className="container">
             <header className="jumbotron">
                 <h3>{user ? `Hello, general ${user['username']}!` : <>
-                        <p>Hi, hi, hi, there!</p>
-                        <p>Welly, welly, welly, welly, welly, welly, well!</p>
-                        <p>To what do I owe the extreme pleasure of this surprising visit?</p>
-                    </>} </h3>
+                    <p>Hi, hi, hi, there!</p>
+                    <p>Welly, welly, welly, welly, welly, welly, well!</p>
+                    <p>To what do I owe the extreme pleasure of this surprising visit?</p>
+                </>} </h3>
             </header>
         </div>
     )

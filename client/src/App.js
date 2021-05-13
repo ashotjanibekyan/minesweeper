@@ -5,11 +5,11 @@ import "./App.css";
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
-import Top from "./components/top.component";
-import Game from "./components/Game/game.component";
+import Login from "./components/login";
+import Register from "./components/register";
+import Home from "./components/home";
+import Top from "./components/top";
+import Game from "./components/Game/game";
 
 const App = (props) => {
     const [user, setUser] = useState(AuthService.getCurrentUser());
@@ -28,17 +28,19 @@ const App = (props) => {
                                 if (window.location.pathname.startsWith('/new')) {
                                     window.location.reload('./new')
                                 }
-                                }} className="nav-link">New Game</Link>
+                            }} className="nav-link">New Game</Link>
                         </li>
                     )}
                 </div>
-
                 {user ? (
-                    <div className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <a href="/" className="nav-link" onClick={AuthService.logout}>Logout</a>
-                        </li>
-                    </div>
+                    <>
+                        <div style={{ color: 'white' }}>Welcome {user.username}!</div>
+                        <div className="navbar-nav ml-auto">
+                            <li className="nav-item">
+                                <a href="/" className="nav-link" onClick={AuthService.logout}>Logout</a>
+                            </li>
+                        </div>
+                    </>
                 ) : (
                     <div className="navbar-nav ml-auto">
                         <li className="nav-item">
