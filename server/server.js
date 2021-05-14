@@ -21,7 +21,7 @@ db.mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    db.mongoose.connection.db.dropDatabase();
+    // db.mongoose.connection.db.dropDatabase();
     console.log('Successfully connect to MongoDB.');
   })
   .catch((err) => {

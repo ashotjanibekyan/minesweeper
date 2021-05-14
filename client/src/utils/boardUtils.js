@@ -130,7 +130,7 @@ const getSettings = (diff) => {
     case 'medium':
       rows = 16;
       cols = 16;
-      mines = 40;
+      mines = 16;
       break;
     case 'hard':
       rows = 16;

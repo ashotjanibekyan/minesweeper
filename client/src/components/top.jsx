@@ -17,27 +17,22 @@ const Top = () => {
   }, [level]);
 
   const getDataAsReactElement = () =>
-    !data.data ? null : (
+    !data ? null : (
       <tbody>
         <tr>
           <th>Username</th>
-          <th>Seconds</th>
-          <th>Level</th>
-          <th>Time</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Best time (in seconds)</th>
         </tr>
-        {data.data.map((el) => (
+        {data.map((el) => (
           <tr
             className={user && el.username === user ? 'text-success' : null}
             key={uuidv4()}
           >
-            {Object.entries(el).map((field, index) => {
-              if (index === 3) {
-                return (
-                  <td key={uuidv4()}>{new Date(field[1]).toDateString()}</td>
-                );
-              }
-              return <td key={uuidv4()}>{field[1]}</td>;
-            })}
+            {Object.entries(el).map((field) => (
+              <td key={uuidv4()}>{field[1]}</td>
+            ))}
           </tr>
         ))}
       </tbody>

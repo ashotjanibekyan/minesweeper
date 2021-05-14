@@ -8,6 +8,9 @@ const User = mongoose.model(
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
+    easyBest: { type: Number, default: Infinity },
+    mediumBest: { type: Number, default: Infinity },
+    hardBest: { type: Number, default: Infinity },
   })
 );
 

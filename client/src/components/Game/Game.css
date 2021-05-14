@@ -5,6 +5,13 @@
   background-color: gray;
 }
 
+.row_hard {
+  width: 900px;
+}
+
+.row_medium {
+  width: 480px;
+}
 .open {
   background-color: aqua;
   text-align: center;

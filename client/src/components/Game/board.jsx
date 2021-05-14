@@ -43,7 +43,7 @@ const Board = ({ board, movieHandler, restart, difficulty }) => {
       <div className="h-100 d-flex justify-content-center align-items-center">
         <div id="board">
           {cols.map((row) => (
-            <div className="row" key={uuidv4()}>
+            <div className={`row row_${difficulty}`} key={uuidv4()}>
               {row}
             </div>
           ))}

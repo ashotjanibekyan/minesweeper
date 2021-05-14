@@ -22,6 +22,8 @@ const initialState = {
     difficulty: null,
     board: undefined,
     gameOver: false,
+    nMines: 0,
+    nMarked: 0,
     remaining: 0,
     readyForSubmit: true,
   },
@@ -57,6 +59,8 @@ const Game = () => {
     setGameData({
       ...initialState.gameData,
       difficulty: diff,
+      nMarked: 0,
+      nMines: mines,
       board: generateBoard(rows, cols, mines),
       remaining: rows * cols - mines,
     });
@@ -125,18 +129,12 @@ const Game = () => {
       gameData.board[row][col].val > 0
     ) {
       const neighbors = getNeighbors(gameData.board, row, col);
-      console.log(neighbors);
       const nMarked = neighbors.reduce((accumulator, [r, c]) => {
         if (gameData.board[r][c].isMarked) {
-          console.log(r, c);
           return accumulator + 1;
         }
         return accumulator;
       }, 0);
-      console.log(`nMarked, ${nMarked}`);
-      console.log(
-        `gameData.board[row][col].val, ${gameData.board[row][col].val}`
-      );
       if (nMarked === gameData.board[row][col].val) {
         neighbors.forEach(([r, c]) => {
           if (!gameData.board[r][c].isMarked && !gameData.board[r][c].isOpen) {
@@ -144,11 +142,21 @@ const Game = () => {
           }
         });
       }
-      // TODO : implement middle click effect
     } else if (e.button === 2 && !gameData.board[row][col].isOpen) {
       newBoard = gameData.board.map((el) => [...el]);
       newBoard[row][col].isMarked = !newBoard[row][col].isMarked;
-      setGameData({ ...gameData, board: newBoard });
+      let { nMarked } = gameData;
+      if (newBoard[row][col].isMarked) {
+        nMarked += 1;
+      }
+      if (!newBoard[row][col].isMarked) {
+        nMarked -= 1;
+      }
+      setGameData({
+        ...gameData,
+        board: newBoard,
+        nMarked,
+      });
     }
   };
 
@@ -184,7 +192,11 @@ const Game = () => {
         <>
           <UserResults userStat={userStat} />
           <Timer gameOver={gameData.gameOver} startTime={startTime} />
-          <p className="text-center">Use middle click to mark mines</p>
+          <p className="text-center">
+            {Math.max(gameData.nMines - gameData.nMarked, 0)} mines remaining:
+            there are {gameData.nMines} mines and you have marked{' '}
+            {gameData.nMarked} cells
+          </p>
           <Board
             movieHandler={movieHandler}
             restart={selectDifficulty}

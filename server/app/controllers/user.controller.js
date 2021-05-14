@@ -1,14 +1,26 @@
 const db = require('../models');
 
 const Result = db.result;
+const User = db.user;
 
-exports.submitResult = (req, res) => {
+exports.submitResult = async (req, res) => {
   const result = new Result({
     username: req.body.username,
     time: req.body.time,
     level: req.body.level,
     isWin: req.body.isWin,
   });
+  if (req.body.isWin) {
+    await User.findOne({ username: req.body.username }).then(async (user) => {
+      const key = `${req.body.level}Best`;
+      if (!user[key] || user[key] > req.body.time) {
+        const obj = {}; // updateOne treats key as a "key" key not as a variable
+        obj[key] = req.body.time;
+        await User.updateOne({ username: req.body.username }, { $set: obj });
+      }
+    });
+  }
+
   result.save((err) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -19,22 +31,61 @@ exports.submitResult = (req, res) => {
 };
 
 exports.top = async (req, res) => {
-  let data = [];
-  await Result.find({ level: req.query.level, isWin: true })
-    .sort({ time: 1 })
-    .limit(250)
+  const data = [];
+  const sort = {};
+  sort[`${req.query.level}Best`] = 1;
+  await User.find({})
+    .sort(sort)
+    .limit(10)
     .then((results) => {
-      data = results.map((result) => {
-        const { username, time, level, createdAt } = result;
-        return {
+      results.forEach((result) => {
+        const {
           username,
-          time,
-          level,
-          createdAt,
+          firstName,
+          lastName,
+          easyBest,
+          mediumBest,
+          hardBest,
+        } = result;
+        const obj = {
+          username,
+          firstName,
+          lastName,
         };
+        switch (`${req.query.level}`) {
+          case 'easy':
+            obj.best = easyBest;
+            break;
+          case 'medium':
+            obj.best = mediumBest;
+            break;
+          case 'hard':
+            obj.best = hardBest;
+            break;
+          default:
+            obj.best = mediumBest;
+            break;
+        }
+        if (Number.isFinite(obj.best)) {
+          data.push(obj);
+        }
       });
     });
-  res.json({ data });
+  // await Result.find({ level: req.query.level, isWin: true })
+  //   .sort({ time: 1 })
+  //   .limit(250)
+  //   .then((results) => {
+  //     data = results.map((result) => {
+  //       const { username, time, level, createdAt } = result;
+  //       return {
+  //         username,
+  //         time,
+  //         level,
+  //         createdAt,
+  //       };
+  //     });
+  //   });
+  res.json(data);
 };
 
 exports.userData = async (req, res) => {
