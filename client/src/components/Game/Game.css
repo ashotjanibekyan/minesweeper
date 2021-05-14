@@ -1,24 +1,24 @@
 .cell {
-    width: 30px;
-    height: 30px;
-    border: solid 1px;
-    background-color: gray
+  width: 30px;
+  height: 30px;
+  border: solid 1px;
+  background-color: gray;
 }
 
 .open {
-    background-color: aqua;
-    text-align: center;
-    margin: auto;
+  background-color: aqua;
+  text-align: center;
+  margin: auto;
 }
 
 .bomb {
-    background-color: red;
+  background-color: red;
 }
 
 .mark {
-    background-color: orange;
+  background-color: orange;
 }
 
 #board {
-    cursor: pointer;
+  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "localhost",
-    PORT: 27017,
-    DB: "minesweeper"
+  HOST: 'localhost',
+  PORT: 27017,
+  DB: 'minesweeper',
 };
