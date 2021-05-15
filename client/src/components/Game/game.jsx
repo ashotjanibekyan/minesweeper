@@ -3,12 +3,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import DifficultySelector from './difficultySelector';
 import Board from './board';
-import {
-  generateBoard,
-  getSettings,
-  getNeighbors,
-  cascade,
-} from '../../utils/boardUtils';
+import Utils from '../../utils/boardUtils';
 import Timer from './timer';
 
 import AuthService from '../../services/auth.service';
@@ -45,6 +40,8 @@ const initialState = {
     },
   },
 };
+
+const { generateBoard, getSettings, getNeighbors, cascade } = Utils;
 
 const Game = () => {
   const [gameData, setGameData] = useState(initialState.gameData);

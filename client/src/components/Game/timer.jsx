@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import utils from '../../utils/boardUtils';
+
 const Timer = (props) => {
   const { startTime, gameOver } = props;
   const [, setTemp] = useState(0);
@@ -21,7 +23,7 @@ const Timer = (props) => {
 
   return (
     <h3 className="text-center">
-      {Math.round((new Date() - startTime) / 1000)} seconds
+      {utils.sToHHMMSS(Math.round((new Date() - startTime) / 1000))}
     </h3>
   );
 };

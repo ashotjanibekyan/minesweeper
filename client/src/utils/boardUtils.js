@@ -130,7 +130,7 @@ const getSettings = (diff) => {
     case 'medium':
       rows = 16;
       cols = 16;
-      mines = 16;
+      mines = 40;
       break;
     case 'hard':
       rows = 16;
@@ -146,7 +146,30 @@ const getSettings = (diff) => {
   return [rows, cols, mines];
 };
 
-exports.generateBoard = generateBoard;
-exports.getNeighbors = getNeighbors;
-exports.getSettings = getSettings;
-exports.cascade = cascade;
+const sToHHMMSS = (second) => {
+  let h = Math.floor(second / 3600);
+  let m = Math.floor((second - h * 3600) / 60);
+  let s = second - h * 3600 - m * 60;
+
+  if (h < 10) {
+    h = `0${h}`;
+  }
+  if (m < 10) {
+    m = `0${m}`;
+  }
+  if (s < 10) {
+    s = `0${s}`;
+  }
+  if (h === '00') {
+    return `${m}:${s}`;
+  }
+  return `${h}:${m}:${s}`;
+};
+
+export default {
+  generateBoard,
+  getNeighbors,
+  getSettings,
+  sToHHMMSS,
+  cascade,
+};
