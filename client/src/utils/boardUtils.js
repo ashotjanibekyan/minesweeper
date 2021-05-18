@@ -146,7 +146,7 @@ const getSettings = (diff) => {
   return [rows, cols, mines];
 };
 
-const sToHHMMSS = (second) => {
+const formatSeconds = (second) => {
   let h = Math.floor(second / 3600);
   let m = Math.floor((second - h * 3600) / 60);
   let s = second - h * 3600 - m * 60;
@@ -170,6 +170,6 @@ export default {
   generateBoard,
   getNeighbors,
   getSettings,
-  sToHHMMSS,
+  formatSeconds,
   cascade,
 };

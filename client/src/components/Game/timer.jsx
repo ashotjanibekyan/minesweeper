@@ -23,7 +23,7 @@ const Timer = (props) => {
 
   return (
     <h3 className="text-center">
-      {utils.sToHHMMSS(Math.round((new Date() - startTime) / 1000))}
+      {utils.formatSeconds(Math.round((new Date() - startTime) / 1000))}
     </h3>
   );
 };

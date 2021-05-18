@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import utils from '../../utils/boardUtils';
 
 const UserResults = ({ userStat }) => (
   <table className="table table-sm table-bordered table-dark">
@@ -30,9 +31,15 @@ const UserResults = ({ userStat }) => (
       </tr>
       <tr>
         <th>Best result</th>
-        <td>{userStat.bests.easy}</td>
-        <td>{userStat.bests.medium}</td>
-        <td>{userStat.bests.hard}</td>
+        <td>
+          {userStat.bests.easy && utils.formatSeconds(userStat.bests.easy)}
+        </td>
+        <td>
+          {userStat.bests.medium && utils.formatSeconds(userStat.bests.medium)}
+        </td>
+        <td>
+          {userStat.bests.hard && utils.formatSeconds(userStat.bests.hard)}
+        </td>
       </tr>
     </tbody>
   </table>
